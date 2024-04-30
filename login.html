@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de red con vis.js</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"></script>
+    <link rel="stylesheet" href="css/login.css">
+  </head>
+  <body>
+    <header>
+      <button class="luz"></button>
+    </header>
+
+
+    <div id="container">
+      <div id="network"></div>
+      <div id="login-form">
+        <form >
+          <h2>Iniciar sesión</h2>
+          <p id="mensaje"></p>
+          <div class="form__group field">
+            <input type="text" class="form__field" placeholder="Username:" required="" id="username">
+            <label for="username" class="form__label">Username:</label>
+          </div>
+          <div class="form__group field">
+            <input type="password" class="form__field" placeholder="Password:" required="" id="password">
+            <label for="password" class="form__label">Password:</label>
+          </div>
+          <button class="button-85" role="button"  type="button" onclick="validarIngreso()">Iniciar</button>
+        </form>
+      </div>
+    </div>
+
+
+    <script>
+      // Creamos un conjunto de nodos y conexiones
+      var nodes = new vis.DataSet([
+        { id: 1, label: '', color: 'red' },
+        { id: 2, label: '', color: 'blue' },
+        { id: 3, label: '', color: 'green' },
+        { id: 4, label: '', color: 'yellow' },
+        { id: 5, label: '', color: 'purple' },
+        { id: 6, label: '', color: 'pink' },
+        { id: 7, label: '', color: 'grey' },
+        { id: 8, label: '', color: 'White' },
+        { id: 9, label: '', color: 'Brown' },
+        { id: 10, label: '', color: 'Orange' },
+        { id: 11, label: '', color: 'Violet' },
+        { id: 12, label: '', color: 'blue' },
+        { id: 13, label: '', color: 'green' },
+        { id: 14, label: '', color: 'yellow' },
+        { id: 15, label: '', color: 'purple' },
+        { id: 16, label: '', color: 'pink' },
+        { id: 17, label: '', color: 'grey' },
+        { id: 18, label: '', color: 'White' },
+        { id: 19, label: '', color: 'Brown' },
+        { id: 20, label: '', color: 'red' },
+        { id: 21, label: '', color: 'orange' },
+        { id: 22, label: '', color: 'blue' },
+        { id: 23, label: '', color: 'green' },
+        { id: 24, label: '', color: 'yellow' },
+        { id: 25, label: '', color: 'purple' },
+        { id: 26, label: '', color: 'pink' },
+        { id: 27, label: '', color: 'grey' },
+        { id: 28, label: '', color: 'White' },
+        { id: 29, label: '', color: 'Brown' },
+        { id: 30, label: '', color: 'Orange' },
+        { id: 31, label: '', color: 'Violet' },
+        { id: 32, label: '', color: 'blue' },
+        { id: 33, label: '', color: 'green' },
+        { id: 34, label: '', color: 'yellow' },
+        { id: 35, label: '', color: 'purple' },
+        { id: 36, label: '', color: 'pink' },
+        { id: 37, label: '', color: 'grey' },
+        { id: 38, label: '', color: 'White' },
+        { id: 39, label: '', color: 'Brown' },
+        { id: 40, label: '', color: 'blue' },
+        { id: 41, label: '', color: 'red' },
+        { id: 42, label: '', color: 'blue' },
+        { id: 43, label: '', color: 'green' },
+        { id: 44, label: '', color: 'yellow' },
+        { id: 45, label: '', color: 'purple' },
+        { id: 46, label: '', color: 'pink' },
+        { id: 47, label: '', color: 'grey' },
+        { id: 48, label: '', color: 'White' },
+        { id: 49, label: '', color: 'Brown' },
+        { id: 50, label: '', color: 'Orange' },
+      ]);
+
+      var edges = new vis.DataSet([
+        { from: 1, to: 2 },
+        { from: 2, to: 3 },
+        { from: 3, to: 4 },
+        { from: 3, to: 5 },
+        { from: 5, to: 1 },
+        { from: 1, to: 6 },
+        { from: 2, to: 5 },
+        { from: 5, to: 6 },
+        { from: 2, to: 4 },
+        { from: 3, to: 6 },
+        { from: 7, to: 8 },
+        { from: 5, to: 8 },
+        { from: 6, to: 9 },
+        { from: 10, to: 11},
+        { from: 5, to: 11},
+        { from: 9, to: 10},
+        { from: 9, to: 11},
+        { from: 4, to: 10},
+        { from: 12, to: 1 },
+        { from: 13, to: 3 },
+        { from: 14, to: 9 },
+        { from: 15, to: 12 },
+        { from: 16, to: 15},
+        { from: 17, to: 19},
+        { from: 18, to: 2},
+        { from: 19, to: 8},
+        { from: 12, to: 18},
+        { from: 15, to: 7},
+        { from: 16, to: 17},
+        { from: 14, to: 13},
+        { from: 16, to: 8},
+        { from: 14, to: 17},
+        { from: 14, to: 12},
+        { from: 19, to: 32},
+        { from: 20, to: 31},
+        { from: 21, to: 30},
+        { from: 22, to: 29},
+        { from: 23, to: 28},
+        { from: 24, to: 27},
+        { from: 25, to: 26},
+        { from: 26, to: 25},
+        { from: 27, to: 24},
+        { from: 28, to: 23},
+        { from: 29, to: 22},
+        { from: 30, to: 21},
+        { from: 31, to: 20},
+        { from: 32, to: 19},
+        { from: 33, to: 18},
+        { from: 34, to: 17},
+        { from: 35, to: 16},
+        { from: 36, to: 15},
+        { from: 37, to: 14},
+        { from: 38, to: 13},
+        { from: 39, to: 12 },
+        { from: 40, to: 11 },
+        { from: 41, to: 10 },
+        { from: 42, to: 9 },
+        { from: 43, to: 8 },
+        { from: 44, to: 7 },
+        { from: 45, to: 6},
+        { from: 46, to: 5},
+        { from: 47, to: 4},
+        { from: 48, to: 3},
+        { from: 49, to: 2},
+        { from: 50, to: 1 },
+        { from: 22, to:  10},
+        { from: 29, to: 33 },
+        { from: 30, to: 7 },
+        { from: 21, to: 14 },
+        { from: 31, to:  44},
+        { from: 20, to:  19},
+        { from:28 , to: 1 },
+        { from: 23, to: 11 },
+        { from: 28, to:  3},
+        { from:26 , to: 48 },
+        { from: 25 , to: 45 },
+        { from: 27 , to: 14 },
+        { from: 24, to: 4 },
+        {from: 49, to: 22 },
+        {from: 47, to: 21 },
+        {from: 41, to: 7 },
+        {from: 39, to: 41 },
+        {from: 36, to: 26 },
+        {from: 35, to: 32 },
+        {from: 32, to: 49},
+        {from: 43, to: 2 },
+        {from: 40, to: 4 },
+        {from: 34, to: 23 },
+        {from: 37, to: 28 },
+        {from: 42, to: 52 },
+        {from: 40, to: 1 },
+        {from: 46, to: 38 },
+        {from: 25, to: 5 },
+        {from: 40, to: 13 },
+        {from: 19, to: 43 },
+        {from: 31, to: 8 },
+        {from: 33, to: 10 },
+        {from: 52, to: 30 },
+        {from: 26, to: 34 },
+        {from: 42, to: 52 },
+        {from: 30, to: 48 },
+        {from: 42, to: 8 },
+        {from: 29, to: 25},
+        {from: 24, to: 49 },
+        {from: 20, to: 7 },
+      ]);
+
+      // Creamos un objeto de configuración
+      var options = {};
+
+      // Inicializamos la red
+      var container = document.getElementById('network');
+      var data = {
+        nodes: nodes,
+        edges: edges
+      };
+
+      var network = new vis.Network(container, data, options);
+
+      var intentos = 0;
+
+      function validarIngreso() {
+        var usu = document.getElementById("username").value;
+        var cont = document.getElementById("password").value;
+        var mensaje = document.getElementById("mensaje");
+
+        if (usu === "js" && cont === "24") {
+          window.location.href = "website.html";
+        } else {
+          intentos++;
+          if (intentos >= 3) {
+            mensaje.innerHTML = "Acceso bloqueado";
+            document.querySelector('button[type="button"]').disabled = true;
+          } else {
+            mensaje.innerHTML = "Datos incorrectos. Intentos restantes: " + (3 - intentos);
+          }
+        }
+      }
+
+      // Envía el formulario al hacer clic en el botón
+      document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Evita que el formulario se envíe automáticamente
+        validarIngreso(); // Llama a la función de validación de ingreso
+      });
+    </script>
+  </body>
+</html>
+
+
