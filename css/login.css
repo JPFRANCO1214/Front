@@ -27,7 +27,7 @@ html, body {
 
 #login-form h2 {
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   text-align: center;
 }
 
@@ -46,7 +46,7 @@ html, body {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin: 25px;
+  margin: 40px;
 }
 
 #login-form button:hover {
@@ -82,7 +82,7 @@ padding: 45px 35px;
   border-bottom: 2px solid #000000;
   outline: 0;
   font-size: 17px;
-  color: #ffffff;
+  color: #000000;
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
