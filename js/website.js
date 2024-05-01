@@ -1,8 +1,7 @@
 function startJourney() {
-    window.location.href = "loadjourney.html";
-    window.onload = function() {
-        setTimeout(function() {
-            window.location.href = "journey.html";
-        }, 5000); // 5000 milisegundos = 5 segundos
-    };
+    // Redirigir a la página de carga
+    window.location.href = "loadjourney.html?redirect=true";
+}
+function redirigir() {
+    setTimeout(function() {window.location.href = "loadjourney.html?redirect=true";}, 250);
 }
