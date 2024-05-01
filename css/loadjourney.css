@@ -1,15 +1,21 @@
-body{
+/*---------------------------------------BODY------------------------------------*/
+body {
   background-color: #212121;
 }
+
 .card {
   /* color used to softly clip top and bottom of the .words container */
   --bg-color: #212121;
   background-color: var(--bg-color);
   padding: 1rem 2rem;
   border-radius: 1.25rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 100vh;
 }
 .loader {
-  color: rgb(124, 124, 124);
+  color: rgb(131, 131, 131);
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: 25px;
@@ -44,8 +50,13 @@ body{
   display: block;
   height: 100%;
   padding-left: 6px;
-  color: #956afa;
+  color: #9148ff;
   animation: spin_4991 4s infinite;
+
+}
+
+p{
+  margin-top: .5px;
 }
 
 @keyframes spin_4991 {
@@ -89,3 +100,5 @@ body{
     transform: translateY(-400%);
   }
 }
+
+/*-----------------------------------------------------------------------------------------*/
