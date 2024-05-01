@@ -1,9 +1,17 @@
 /*---------------------------------------BODY------------------------------------*/
+body{
+  background-color: black;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+  margin: 0;
+}
 #wifi-loader {
-  --background: #62abff;
-  --front-color: #000;
-  --back-color: #c3c8de;
-  --text-color: #414856;
+  --background: #000000;
+  --front-color: #9148ff;
+  --back-color: #5C2E99    ;
+  --text-color: #9148ff    ;
   width: 64px;
   height: 64px;
   border-radius: 50px;
