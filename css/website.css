@@ -40,7 +40,7 @@ section {
   justify-content: space-evenly;
   background-color: var(--col-dark);
   border-radius: 30px;
-  margin-right: 46px;
+  margin-right: 1px;
 }
 .label {
   padding: 8px 28px;
@@ -312,5 +312,19 @@ article{
 
 .button:active {
   transform: scale(0.8);
+}
+/*-----------------------------------------------------------------------------------------*/
+/*-------------------------------------QR-------------------------------------------*/
+.qr-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-25%, -50%);
+}
+
+.qr-image {
+  max-width: 50%;
+  height: auto;
 }
 /*-----------------------------------------------------------------------------------------*/

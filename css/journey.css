@@ -40,7 +40,7 @@ section {
   justify-content: space-evenly;
   background-color: var(--col-dark);
   border-radius: 30px;
-  margin-right: 46px;
+  margin-right: 1px;
 }
 .label {
   padding: 8px 28px;
