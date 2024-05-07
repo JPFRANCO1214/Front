@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Network Management</title>
   <link rel="stylesheet" href="css/journey.css">
-  <script src="js/journey.js">
-  </script>
-  
-
+  <script src="js/journey.js"></script>
   <style type="text/css">
     #mynetwork {
       width: 100%;
@@ -16,15 +13,13 @@
       margin-top: -125px;
       margin-left: -375px;
     }
+    
   </style>
-
   <script
     type="text/javascript"
     src="../../../standalone/umd/vis-network.min.js"
   ></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-
-
   <script type="text/javascript">
     var nodes = null;
     var edges = null;
@@ -34,12 +29,9 @@
     var EDGE_LENGTH_MAIN = 150;
     var EDGE_LENGTH_SUB = 50;
 
-    // Called when the Visualization API is loaded.
     function draw() {
-      // Create a data table with nodes.
       nodes = [];
 
-      // Create a data table with links.
       edges = [];
 
       var DIR = "css/img/";
@@ -110,28 +102,61 @@
       for (var i = 200; i <= 201; i++) {
         nodes.push({
           id: i,
-          label: "Switch",
-          image: DIR + "cubo.png",
+          label: "Router",
+          image: DIR + "router-inalambrico.png",
           shape: "image",
         });
         edges.push({ from: 3, to: i, length: EDGE_LENGTH_SUB });
       }
 
-      // create a network
-      var container = document.getElementById("mynetwork");
+      var container = document.getElementById("mynetwork"); 
       var data = {
         nodes: nodes,
         edges: edges,
       };
-      var options = {};
+      var options = {
+        edges: {
+          color: {
+            color: '#9148ff', 
+            highlight: '#00FF0D' 
+          },
+          width: 2, 
+          selectionWidth: 2, 
+          smooth: {
+            type: 'dynamic', 
+            forceDirection: 'horizontal' 
+          },
+          dashes: true, 
+          chosen: true 
+        },
+        interaction: {
+          hover: true 
+        }
+      };
+
+      var routerEdgeOptions = {
+        dashes: true 
+      };
+
+      var switchEdgeOptions = {
+        dashes: false 
+      };
+
+      edges.forEach(function(edge) {
+        if (edge.to >= 1 && edge.to <= 3) {
+          Object.assign(edge, routerEdgeOptions);
+        }
+      });
+
+      edges.forEach(function(edge) {
+        if (edge.to >= 101 && edge.to <= 104) {
+          Object.assign(edge, switchEdgeOptions);
+        }
+      });
+
       network = new vis.Network(container, data, options);
     }
   </script>
-
-
-
-
-
 </head>
 <body onload="draw()">
   <header>
