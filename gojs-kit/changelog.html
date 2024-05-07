@@ -1,0 +1,756 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    
+    
+    <meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+
+<meta name="description" content="GoJS Change Log" />
+<meta itemprop="description" content="GoJS Change Log" />
+<meta property="og:description" content="GoJS Change Log" />
+<meta name="twitter:description" content="GoJS Change Log" />
+
+
+<link rel="preconnect" href="https://rsms.me/">
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<link rel="stylesheet" href="./assets/css/style.css">
+<!-- Copyright 1998-2024 by Northwoods Software Corporation. -->
+
+
+<meta itemprop="name" content=Change Log />
+<meta property="og:title" content=Change Log />
+<meta name="twitter:title" content=Change Log />
+
+
+<meta property="og:image" content="https://gojs.net/3.0.1/assets/images/fp/defaultCard.png" />
+<meta itemprop="image" content="https://gojs.net/3.0.1/assets/images/fp/defaultCard.png" />
+<meta name="twitter:image" content="https://gojs.net/3.0.1/assets/images/fp/defaultCard.png" />
+
+<meta property="og:url" content="https://gojs.net/3.0.1/changelog.html" />
+<meta property="twitter:url" content="https://gojs.net/3.0.1/changelog.html" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="og:type" content="website" />
+<meta property="twitter:domain" content="gojs.net" />
+
+    <title>
+      Change Log | GoJS
+    </title>
+    <link rel="stylesheet" href="./assets/css/prism.css"/>
+  </head>
+
+  <body>
+    <nav id="navTop" class=" w-full h-[var(--topnav-h)] z-30 bg-white border-b border-b-gray-200">
+  <div class="max-w-screen-xl mx-auto flex flex-wrap items-start justify-between px-4">
+    <a class="text-white bg-nwoods-primary font-bold !leading-[calc(var(--topnav-h)_-_1px)] my-0 px-2 text-4xl lg:text-5xl logo"
+       href="./">
+      GoJS
+    </a>
+    <div class="relative">
+      <button id="topnavButton" class="h-[calc(var(--topnav-h)_-_1px)] px-2 m-0 text-gray-900 bg-inherit shadow-none md:hidden hover:!bg-inherit hover:!text-nwoods-accent hover:!shadow-none" aria-label="Navigation">
+        <svg class="h-7 w-7 block" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div id="topnavList" class="hidden md:block">
+        <div class="absolute right-0 z-30 flex flex-col items-end rounded border border-gray-200 p-4 pl-12 shadow bg-white text-gray-900 font-semibold
+                    md:flex-row md:space-x-4 md:items-start md:border-0 md:p-0 md:shadow-none md:bg-inherit">
+          <a href="./learn/">Learn</a>
+          <a href="./samples/">Samples</a>
+          <a href="./intro/">Intro</a>
+          <a href="./api/">API</a>
+          <a href="./download.html">Download</a>
+          <a href="https://forum.nwoods.com/c/gojs/11" target="_blank" rel="noopener">Forum</a>
+          <a href="https://www.nwoods.com/contact.html"
+            target="_blank" rel="noopener" onclick="getOutboundLink('https://www.nwoods.com/contact.html', 'contact');">Contact</a>
+          <a href="https://www.nwoods.com/sales/index.html"
+            target="_blank" rel="noopener" onclick="getOutboundLink('https://www.nwoods.com/sales/index.html', 'buy');">Buy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    // topnav
+    var topButton = document.getElementById("topnavButton");
+    var topnavList = document.getElementById("topnavList");
+    if (topButton && topnavList) {
+      topButton.addEventListener("click", function (e) {
+        topnavList
+          .classList
+          .toggle("hidden");
+        e.stopPropagation();
+      });
+      document.addEventListener("click", function (e) {
+        // if the clicked element isn't the list, close the list
+        if (!topnavList.classList.contains("hidden") && !e.target.closest("#topnavList")) {
+          topButton.click();
+        }
+      });
+
+      // set active <a> element
+      var url = window
+        .location
+        .href
+        .toLowerCase();
+      var aTags = topnavList.getElementsByTagName('a');
+      for (var i = 0; i < aTags.length; i++) {
+        var lowerhref = aTags[i]
+          .href
+          .toLowerCase();
+        if (url.startsWith(lowerhref)) {
+          aTags[i]
+            .classList
+            .add('active');
+          break;
+        }
+      }
+    }
+  });
+</script>
+    
+    <div class="w-full max-w-screen-xl mx-auto">
+      
+      
+      <div class="px-4 pb-16 w-full overflow-hidden prose">
+        
+          
+<h1>GoJS Change Log</h1>
+<p id="ver"></p>
+
+<p>
+  We maintain a <a href="https://github.com/NorthwoodsSoftware/GoJS" target="_blank" rel="noopener">GitHub
+    Repository</a>, which
+  you can star to follow version updates. We also notify of changes on
+  <a href="https://twitter.com/NorthwoodsGo" target="_blank" rel="noopener">Twitter</a>.
+</p>
+
+
+<h2 id="3.0">GoJS 3.0</h2>
+
+<p>GoJS 3.0 brings a number of new features for advanced Diagram control, such as custom routing via
+  <a target="_blank" href="intro/routers.html">Routers</a> and data-bound theming
+  with <a target="_blank" href="intro/theming.html">Themes</a>. We have also rewritten some of the internals
+  to take advantage of modern JavaScript, and rewritten the API to use clearer enumerations. These changes are largely
+  backwards-compatible.
+</p>
+
+<p>There are a number of other changes, detailed below.</p>
+
+<h3 id="3.0.1">Changes for 3.0.1</h3>
+<ul>
+  <li>
+    <strong>Potentially incompatible:</strong>
+    We have added <a>InputEvent.code</a> to correspond to <code>KeyboardEvent.code</code>
+    <a>CommandHandler.doKeyDown</a> now uses <code>KeyboardEvent.code</code> instead of <code>KeyboardEvent.key</code> for better cross-language shortcut support.
+    This may lead to incompatibilities if you have code (such as testing code) that sets an <a>InputEvent.key</a> value. You may need to additionally set <a>InputEvent.code</a>.
+    If your code does not modify the value of <a>InputEvent.key</a> anywhere (such as in a tool customization or in a <a>CommandHandler.doKeyDown</a> override),
+    you do not need to do anything.
+  </li>
+  <li>
+    Fix for initial position when <a>Diagram.autoScale</a> scales initial contents, but a scrollbar is still required.
+  </li>
+  <li>
+    Fixed some <a>Iterator</a>s returned by GoJS (such as from <a>Node.findLinksInto</a>) returning faulty values from
+    use of <code>Symbol.iterator</code>.
+  </li>
+  <li>
+    Fixed a bug where large nodes in a <a>ForceDirectedLayout</a> would sometimes overlap.
+  </li>
+</ul>
+
+<h2 id="3.0">Changes for 3.0</h2>
+
+<h3 id="npmpackages">New npm packages</h3>
+<p>For 3.0, the <code>gojs</code> npm package contains only the release libraries, and no extensions, documentation or
+  sample code.
+  The documentation, sample, and extensions code can be downloaded separately, via <code>npm create gojs-kit</code>.
+</p>
+
+
+<h3 id="Performance">Performance</h3>
+<p>GoJS 3.0 leverages modern JavaScript and more modern Canvas API features for increased performance.
+  However, this also means dropping support for old browsers such as IE11,
+  and there are a number of minor incompatibilities detailed below.</p>
+
+<p>Diagram rendering is now generally faster, and Diagram heap size has been significantly reduced, especially for large
+  graphs.
+</p>
+
+
+<h3 id="Routers">Routers</h3>
+<div class="flex flex-row">
+  <div class="flex flex-col items-center">
+
+    <img class="h-80" src="assets/images/fp/changelog/3.0avoidsLinks.gif">
+    <p><a href="samples/AvoidsLinksRouter.html"><span class="text-xs italic">AvoidsLinks Router</span></a></p>
+  </div>
+  <div class="flex-1">
+    <p>
+      One has always been able to customize the computed paths for Links by setting properties
+      on a Link or on its connected port elements, or by overriding methods on a custom Link subclass.
+      There is now support for a separate routing phase where instances of <a>Router</a> can modify Links.
+      See the <a href="intro/routers.html">intro page on routers</a> for more information.
+    </p>
+    <p>
+      GoJS 3.0 introduces the <a href="samples/AvoidsLinksRouter.html">AvoidsLinks Router</a>, which attempts to
+      separate parallel link segments, and can work alongside AvoidsNodes routing.
+    </p>
+  </div>
+</div>
+
+<h3 id="Theming">Theming</h3>
+<p>
+  GoJS now provides functionality to define and manage themes, and GraphObjects can now be themed via theme bindings.
+  This allows for applications to more easily provide multiple themes, especially light and dark mode.
+  See the <a href="intro/theming.html">intro page in theming</a> for more information.
+</p>
+
+
+<h3 id="ViewportLayers">Viewport Layers</h3>
+<p>
+  There are two new default layers in each Diagram, <code>"ViewportBackground"</code> and
+  <code>"ViewportForeground"</code>.
+  These layers have the new property <a>Layer.isViewportAligned</a> set to <code>true</code>.
+  Parts in viewport aligned layers will not obey the <a>Diagram.position</a> or <a>Diagram.scale</a> properties,
+  so as the user scrolls or pans or zooms they will remain fixed in the viewport.
+</p>
+<p>
+  Layers with <a>Layer.isViewportAligned</a> set to <code>true</code> will automatically position and scale their Parts
+  to be relative to the viewport, based on the Part's <a>GraphObject.alignment</a> and <a>GraphObject.alignmentFocus</a>
+  values,
+  not on its <a>Part.location</a> or <a>GraphObject.position</a>.
+</p>
+
+
+<h3 id="Enumerations">Enumerations</h3>
+<p>
+  GoJS now uses Typescript enumerations to represent possible values for many properties.
+  This enables autocompletion in some text editors.
+  Some examples:
+</p>
+<ul>
+  <li>
+    Where one wrote:
+    <code>new go.Panel({ stretch: go.GraphObject.Fill })</code>,
+    <br>one can now write:
+    <code>new go.Panel({ stretch: go.Stretch.Fill })</code>.
+  </li>
+  <li>
+    Where one wrote:
+    <code>new go.RowColumnDefinition({ column: 1, sizing: go.RowColumnDefinition.None })</code>,
+    <br>one can now write:
+    <code>new go.RowColumnDefinition({ column: 1, sizing: go.Sizing.None })</code>.
+  </li>
+  <li>
+    Where one wrote:
+    <code>new go.TreeLayout({ alignment: go.TreeLayout.AlignmentStart })</code>,
+    <br>one can now write:
+    <code>new go.TreeLayout({ alignment: go.TreeAlignment.Start })</code>.
+  </li>
+</ul>
+<p>
+  The original static EnumValue properties have been deprecated in favor of these new enumerations,
+  but continue to exist for compatibility. So, for example:
+  <code>go.GraphObject.Fill === go.Stretch.Fill</code>.
+  The never-documented <b>EnumValue</b> class has been removed from the library.
+  The new enum values are numbers.
+</p>
+
+
+<h3 id="OtherNewFeatures">Other New Features</h3>
+<ul>
+  <li>
+    Improved Rounded Rectangles: The commonly used <code>"RoundedRectangle"</code> <a>Shape.figure</a>
+    now considers the <a>Shape.parameter2</a> option to be a bit flag mask that determines which corners to round.
+    1: top-left, 2: top-right, 4: bottom-right, 8: bottom-left.
+    This makes it easier to round only the bottom or top corners, or a single corner.
+    For compatibility, the default flags value rounds all four corners.
+  </li>
+  <li>
+    Added the predefined <code>"Capsule"</code> figure, as yet another kind of rounded rectangle.
+    See the <a href="./samples/shapes.html">Shapes sample</a> for an example.
+  </li>
+  <li>
+    Added the predefined <code>"Borders"</code> figure, as yet another kind of rectangle where
+    the <a>Shape.parameter1</a> option is a bit flag mask that determines which sides are drawn.
+    1: top, 2: right, 4: bottom, 8: left.
+    See the <a href="./samples/shapes.html">Shapes sample</a> for an example.
+  </li>
+  <li>
+    Added methods <a>GraphObject.bindModel</a>, <a>GraphObject.bindObject</a>, and <a>GraphObject.bindTwoWay</a>,
+    as convenience functions for adding a Binding to a GraphObject,
+    which additionally call <a>Binding.ofModel</a>, <a>Binding.ofObject</a>, and <a>Binding.makeTwoWay</a>,
+    respectively.
+    The fourth argument to <a>GraphObject.bind</a> has been deprecated -- if you want a TwoWay Binding,
+    call <a>GraphObject.makeTwoWay</a>, which is a clearer declaration of intent.
+  </li>
+  <li>
+    The <a>ForceDirectedLayout</a> class has been rewritten, although the API remains compatible.
+    For small to medium-sized simple graphs (up to around 1000 nodes), these changes should not be noticeable,
+    however for large or complex graphs node placements should be better.
+    Several properties have been added to <a>ForceDirectedLayout</a> -- look for names with "prelayout" in them.
+  </li>
+  <li>
+    <a>LayeredDigraphLayout</a> has improved the routing of some links that go "backward" to form a cycle.
+  </li>
+  <li>
+    Added static functions <a>Point.stringifyFixed</a>, <a>Size.stringifyFixed</a>, <a>Rect.stringifyFixed</a>,
+    <a>Margin.stringifyFixed</a>, <a>Spot.stringifyFixed</a>, and <a>Geometry.stringifyFixed</a>
+    to produce <a>Binding.backConverter</a>s
+    that reduce the size of the output JSON and to make it easier to read and compare.
+    Added the property <a>Model.pointsDigits</a> to control how many decimal digits are written for the
+    <a>Link.points</a> list by <a>Model.toJson</a>.
+  </li>
+  <li>
+    Added the static function <a>TextBlock.isValidFont</a> to allow dynamically deciding
+    whether a CSS font string is valid or not.
+    This is like the existing <a>Brush.isValidColor</a> for checking CSS color strings.
+  </li>
+  <li>
+    Added the read-only property <a>Node.isTreeRoot</a> as a quick way to decide whether a node is a "root" node,
+    while ignoring links that are not <a>Link.isTreeLink</a>, ignoring reflexive links, and considering
+    <a>Diagram.isTreePathToChildren</a>.
+  </li>
+  <li>
+    Code that depends on a <a>Group.placeholder</a> or an <a>Adornment.placeholder</a>
+    now also checks that the placeholder is <a>GraphObject.isVisibleObject</a>,
+    to make it possible to dynamically control whether the placeholder determines the position and size of the Group or
+    Adornment.
+  </li>
+  <li>
+    Calls to <a>Model.toIncrementalJson</a> or <a>Model.toIncrementalData</a> no longer signal an error
+    if the model is a <a>GraphLinksModel</a> and <a>GraphLinksModel.linkKeyProperty</a> is the empty string.
+    Instead, it first modifies the model so that <a>GraphLinksModel.linkKeyProperty</a> is set to <code>"key"</code>,
+    thereby assigning unique key values to all of the link data objects, before producing the resulting text or data.
+  </li>
+  <li>
+    Added the property <a>LinkReshapingTool.resegmentingDistance</a>, to control the distance from a straight line that
+    two adjacent nearly straight segments should be combined into a single segment.
+  </li>
+  <li>
+    Group animations such as group expansion and adding members have been improved.
+  </li>
+</ul>
+
+
+<h2 id="Changes">Changes and Incompatibilities</h2>
+
+<h3 id="Diagraminherit">Diagram.inherit</h3>
+<p>
+  The <b>Diagram.inherit</b> static function has been removed from the API.
+  Now the only supported way to define subclasses is to use <code>class ... extends ... { ... }</code>.
+</p>
+<p>
+  However, this is still a JavaScript library, so it is still possible to dynamically override an
+  individual method on an individual object just by assigning it to a <code>function(...) { ... }</code>.
+  A number of samples continue to demonstrate this by assigning a method on a <a>Tool</a>
+  or on the <a>CommandHandler</a> during <a>Diagram</a> initialization.
+</p>
+
+
+<h3 id="SetMapList">GoJS Set and Map and List</h3>
+<p>The GoJS <a>Set</a> and <a>Map</a> and <a>List</a> collection classes,
+  and their iterators, now implement the JavaScript <code>Symbol.iterator</code> static property.
+  This means that they can be used with <code>for ... of</code> statements and spread syntax <code>[...x]</code>.
+</p>
+<pre><code class="language-js">  const s = new go.Set();
+  s.add(1); s.add(2); s.add(3);
+
+  for (let x of s.iterator) {
+    console.log(x);
+  }
+  // prints:
+  // 1
+  // 2
+  // 3
+
+  [...s] // returns the array [1, 2, 3]
+  [...s.iterator] // also returns the array [1, 2, 3]
+</code></pre>
+
+<p>
+  However, for compatibility, iterators are otherwise unchanged, and <a>Set.iterator</a>, <a>Map.iterator</a>,
+  and <a>List.iterator</a> return GoJS iterators, not the built-in JS iterators.
+</p>
+<p>
+  GoJS <a>Set</a> and <a>Map</a> used to consider both a string and a number of the
+  same value (e.g. "3.14159" and 3.14159) as the same key. They are now considered different keys.
+  Be sure to always get with the same type of value that you added to the Set or set in the Map.
+</p>
+<p>
+  GoJS <a>Set</a> and <a>Map</a> no longer warn about potential collection modification
+  while iterating over the collection.
+</p>
+
+
+<h3 id="InputEventkey">InputEvent.key and InputEvent.code</h3>
+<p>
+  The value of <a>InputEvent.key</a> now exactly reflects the browser <code>KeyboardEvent.key</code> value.
+  If your code does not use the value of <a>InputEvent.key</a> anywhere
+  (such as in a tool customization or in a <a>CommandHandler.doKeyDown</a> override),
+  you do not need to do anything.
+  For some keys, these strings are slightly different. The differences are:
+  <style>
+    table {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    th {
+      border: 1px solid black;
+    }
+
+    td {
+      border: 1px solid black;
+    }
+  </style>
+<table>
+  <tr>
+    <th>GoJS 2.3</th>
+    <th>GoJS 3.0</th>
+  </tr>
+  <tr>
+    <td>"Esc"</td>
+    <td>"Escape"</td>
+  </tr>
+  <tr>
+    <td>"Subtract"</td>
+    <td>"-"</td>
+  </tr>
+  <tr>
+    <td>"Add"</td>
+    <td>"+"</td>
+  </tr>
+  <tr>
+    <td>"Add"</td>
+    <td>"="</td>
+  </tr>
+  <tr>
+    <td>"Up"</td>
+    <td>"ArrowUp"</td>
+  </tr>
+  <tr>
+    <td>"Down"</td>
+    <td>"ArrowDown"</td>
+  </tr>
+  <tr>
+    <td>"Right"</td>
+    <td>"ArrowRight"</td>
+  </tr>
+  <tr>
+    <td>"Left"</td>
+    <td>"ArrowLeft"</td>
+  </tr>
+  <tr>
+    <td>"Del"</td>
+    <td>"Delete"</td>
+  </tr>
+</table>
+</p>
+<p>
+  GoJS 3.0 now reports the <a>InputEvent.key</a> faithfully as 'a' or 'A'.
+  In GoJS 2.3 it uppercased each letter key.
+  Note that GoJS treats both "+" and "=" (formerly "Add") as default commands to increase zoom.
+</p>
+
+<p>
+  As of GoJS 3.0.1, GoJS now uses the <a>InputEvent.code</a> rather than <a>InputEvent.key</a> to determine
+  if any command shall be invoked by <a>CommandHandler.doKeyDown</a>.
+  <span class="text-red-600">If you are simulating InputEvents, you will need to set the
+  <a>InputEvent.code</a> instead of, or in addition to, the <a>InputEvent.key</a>.</span>
+</p>
+
+<h3 id="MinorIncompatibilities">Minor Incompatibilities</h3>
+<ul>
+  <li>
+    <a>Diagram.initialDocumentSpot</a> and <a>Diagram.initialViewportSpot</a> have had their default value changed from
+    <a>Spot.TopLeft</a> to <a>Spot.None</a>. As a consequence, when they are set to a non-None Spot,
+    they will take precedence over any <a>Diagram.initialContentAlignment</a>.
+  </li>
+  <li>
+    <code>go.licenseKey</code>, deprecated when 2.0 was released, has been removed.
+    Set the static property <code>go.Diagram.licenseKey</code> instead.
+  </li>
+  <li>
+    Some default templates have been updated to be themed by default.
+    If you are using default templates in your diagram,
+    you may need to make some minor adjustments to the default themes to better suit the look and feel of your app.
+    Most notably, the default link template is themed such that links are white when using the default dark theme.
+    If your diagram has a dark mode and uses the default link template, define your own link template or use
+    the new theming functionality of v3.0.
+  </li>
+  <li>
+    <code>"Button"</code> builders no longer have a "pressed" state.
+    <code>"ContextMenuButton"</code>s now have more padding.
+  </li>
+  <li>
+    <b>GraphObject.areaBackground</b>, formerly deprecated, has been removed.
+    To get the old behavior, wrap a <a>Panel</a> around the GraphObject and set that Panel's
+    <a>GraphObject.background</a> instead.
+  </li>
+  <li>
+    The initial value of <a>Model.copiesKey</a> has changed from true to false.
+    For example, this is useful to prevent nodes copied from a <a>Palette</a> to a <a>Diagram</a>
+    to keep the same key in the target diagram's model that it had in the palette's model.
+    To get the old behavior, set <code>copiesKey: true</code> on the model.
+  </li>
+  <li>
+    The initial value of <a>CommandHandler.isZoomToFitRestoreEnabled</a> has changed from true to false.
+    This removes the ability for repeated Shift-Z commands to restore the original diagram scale and position.
+    But it means that repeated programmatic calls to <a>CommandHandler.zoomToFit</a> will actually zoom-to-fit.
+    To get the old behavior, set <code>isZoomToFitRestoreEnabled: true</code> on the <a>CommandHandler</a>.
+  </li>
+  <li>
+    The <a>LayeredDigraphLayout.alignOption</a> property now defaults to the value <a>LayeredDigraphAlign.All</a>.
+    The new align code is usually better and faster than the old pack code, sometimes significantly faster.
+    To get the old behavior, set <code>alignOption: go.LayeredDigraphAlign.None</code>.
+  </li>
+  <li>
+    <a>Layout.getLayoutBounds</a> now respects each Part's <a>GraphObject.margin</a>, which makes it easier
+    to pretend that nodes are smaller or bigger than they actually are.
+    To get the old behavior, don't set <b>Node.margin</b> or set it to zero.
+    <a>TableLayout</a> has been updated to maintain the original behavior because it has always
+    treated <b>Node.margin</b> differently from all other layouts.
+  </li>
+  <li>
+    Setting <a>Layer.isTemporary</a> to true no longer automatically sets <a>Layer.isInDocumentBounds</a> to false.
+    If you have added new temporary Layers and you want Parts in those Layers not to be considered when computing the
+    document bounds, you'll need to set that property to false explicitly.
+  </li>
+  <li>
+    We have fixed the behavior of <a>CommandHandler.selectAll</a> not to select Parts/Nodes/Links that
+    are not selectable.
+  </li>
+  <li>
+    Bundled <a>AnimationTrigger</a>s no longer use the <a>AnimationManager.defaultAnimation</a>.
+    This means that <code>"Trigger"</code> is no longer a reason for <a>AnimationManager.canStart</a>.
+    This allows bundled animations to run in parallel with default animations.
+    Bundled animations will no longer raise the <code>"AnimationStarting"</code> or
+    <code>"AnimationFinished"</code> <a>DiagramEvent</a>s.
+  </li>
+  <li>
+    <a>Binding.isToModel</a> is no longer settable. Instead, one should call <a>Binding.ofModel</a>.
+  </li>
+  <li>
+    <a>LayeredDigraphLayout</a> no longer spreads overlapping link segments apart by default.
+    If you want to regain that functionality, add an <a>AvoidsLinksRouter</a> to your <a>Diagram.routers</a> List.
+  </li>
+</ul>
+
+
+<h3 id="ExtensionsSamples">Changes to Extensions and Samples</h3>
+<p>
+  All extensions and samples are now in the <code>create-gojs-kit</code> npm package rather than in the
+  <code>gojs</code> package.
+  We suggest that you download them by executing <code>npm create gojs-kit </code>.
+  However you can continue to download everything from the GoJS <a
+    href="https://github.com/NorthwoodsSoftware/GoJS">GitHub repository</a>
+  or from our <a href="download.html">web site</a>.
+</p>
+<p>
+  Direct script references to extensions in the <code>gojs</code> package will no longer work because that package no
+  longer
+  contains any extensions. However it is possible to refer to them in the <code>create-gojs-kit</code> package:
+</p>
+<pre><code class="language-js">&lt;script src="https://unpkg.com/create-gojs-kit/dist/extensions/AvoidsLinksRouter.js"&gt;&lt;/script&gt;
+</code></pre>
+<p>
+  There is now an <a>AvoidsLinksRouter</a> extension that helps reduce overlapping orthogonal link segments
+  for links that are unrelated to each other.
+  It is demonstrated in the <a href="./samples/AvoidsLinksRouter.html">AvoidsLinksRouter sample</a>.
+</p>
+<!-- <p>
+  There is now an <a>LinkLabelRouter</a> extension.
+  It is demonstrated in the <a href="./samples/LinkLabelRouter.html">LinkLabelRouter sample</a>.
+</p> -->
+<p>
+  There is now an <a>AriaCommandHandler</a> extension.
+  We have added an <a href="./samples/Accessibility.html">Accessibility extension sample</a> to demonstrate
+  accessibility in GoJS.
+</p>
+<p>
+  The <a href="./extensions/Themes.js">Themes.js</a> extension offers some suggested theming choices.
+</p>
+<p>
+  We have added the <code>"ChamferedRectangle"</code> figure to the <a href="./extensions/Figures.js">Figures.js</a>
+  file,
+  which is just like <code>"RoundedRectangle"</code>, except the corners are cut off straight at 45 degrees
+  no matter the aspect ratio of the shape.
+  <a>Shape.parameter1</a> controls the length of both sides of the cut-off triangle.
+  <a>Shape.parameter2</a> controls which corners are cut off.
+  1: top-left, 2: top-right, 4: bottom-right, 8: bottom-left.
+</p>
+<p>
+  The extensions <a href="./extensions/Figures.js">Figures.js</a> file no longer redefines the built-in figures.
+</p>
+<p>
+  We have added new samples:
+</p>
+<ul>
+  <li><a href="./samples/warehouse.html">Warehouse</a></li>
+  <li><a href="./samples/industrialDiagram.html">Industrial Diagram</a></li>
+</ul>
+
+<p>
+  We have deleted the <code>extensionsTS</code> subdirectory.
+  The <code>extensionsJSM</code> subdirectory includes .TS TypeScript files for all of the extensions,
+  along with the compiled .JS JavaScript files that can be loaded as ECMAScript modules.
+</p>
+<p>
+  The JavaScript files in the <code>extensions</code> subdirectory are now all
+  generated from the compiled TypeScript files in <code>extensionsJSM</code>,
+  which reduces the potential variation in functionality between the two extensions directories.
+</p>
+<p>
+  We have deleted the <code>RoundedRectangles.js</code> file from the extensions and extensionsJSM directories.
+  The figures that had been defined there are now predefined in the GoJS library.
+</p>
+<p>
+  The sample HTML pages in both <code>extensions</code> and <code>extensionsJSM</code>
+  have been moved to the <code>samples</code> subdirectory, thereby removing duplicate samples.
+</p>
+<p>
+  A few samples have been moved from the <code>projects</code> subdirectory into the <code>samples</code> subdirectory.
+  The <code>projects</code> subdirectory has been deleted.
+</p>
+<p>
+  We have deleted the Storage extensions. If you need them, copy the code from version 2.
+</p>
+
+
+<h3 id="Fixes">Fixes</h3>
+<ul>
+  <li>Moving a collection of Parts no longer invalidates the Link routes in the collection.</li>
+  <li>Scrollbars no longer flicker on completion of initial animation.</li>
+  <li>Reduced possible duplicate LayoutCompleted events in diagrams with multiple Group layouts.</li>
+</ul>
+
+<hr />
+
+
+
+<h3 id="OldChangeLogs">Old Change Logs</h3>
+<h4><a href="../2.3.16/changelog.html">Change log for 2.3</a></h4>
+<h4><a href="../2.2.23/changelog.html">Change log for 2.2</a></h4>
+<h4><a href="../2.1.56/changelog.html">Change log for 2.1</a></h4>
+<h4><a href="../2.0.21/changelog.html">Change log for 2.0</a></h4>
+<h4><a href="../1.8.38/changelog.html">Change log for 1.*</a> (unsupported)</h4>
+        
+      </div>
+    </div>
+    <footer class="bg-white text-gray-900 border-t border-t-gray-200">
+  <div class="w-full max-w-screen-lg mx-auto px-4 py-6">
+    
+    <p id="version" class="text-xs text-gray-900 m-0"></p>
+    <div class="text-sm px-0 mb-4 grid grid-cols-2 sm:grid-cols-3 gap-y-10">
+      <div>
+        <h2 class="text-base font-semibold text-nwoods-primary">GoJS</h2>
+        <ul class="list-none space-y-4 md:space-y-1 px-0">
+          <li>
+            <a href="./samples/index.html">Samples</a>
+          </li>
+          <li>
+            <a href="./learn/index.html">Learn</a>
+          </li>
+          <li>
+            <a href="./intro/index.html">Intro</a>
+          </li>
+          <li>
+            <a href="./api/index.html">API</a>
+          </li>
+          <li>
+            <a href="./changelog.html">Changelog</a>
+          </li>
+          <li>
+            <a href="https://github.com/NorthwoodsSoftware/GoJS" target="_blank" rel="noopener">GitHub</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-base font-semibold text-nwoods-primary">Support</h2>
+        <ul class="list-none space-y-4 md:space-y-1 px-0">
+          <li>
+            <a href="https://www.nwoods.com/contact.html"
+              target="_blank" rel="noopener" onclick="getOutboundLink('https://www.nwoods.com/contact.html', 'contact');">Contact</a>
+          </li>
+          <li>
+            <a href="https://forum.nwoods.com/c/gojs" target="_blank" rel="noopener">Forum</a>
+          </li>
+          <li>
+            <a href="https://www.nwoods.com/app/activate.aspx?sku=gojs" target="_blank" rel="noopener">Activate</a>
+          </li>
+          <li>
+            <a href="https://www.nwoods.com/sales/index.html"
+              target="_blank" rel="noopener" onclick="getOutboundLink('https://www.nwoods.com/sales/index.html', 'buy');">Buy</a>
+          </li>
+          
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-base font-semibold text-nwoods-primary">Company</h2>
+        <ul class="list-none space-y-4 md:space-y-1 px-0">
+          <li>
+            <a target="_blank" href="https://www.nwoods.com" target="_blank" rel="noopener">Northwoods</a>
+          </li>
+          <li>
+            <a target="_blank" href="https://www.nwoods.com/about.html" target="_blank" rel="noopener">About Us</a>
+          </li>
+          <li>
+            <a target="_blank" href="https://www.nwoods.com/contact.html" target="_blank" rel="noopener">Contact Us</a>
+          </li>
+          <li>
+            <a target="_blank" href="https://www.nwoods.com/consulting.html" target="_blank" rel="noopener">Consulting</a>
+          </li>
+          <li>
+            <a target="_blank" href="https://twitter.com/northwoodsgo" target="_blank" rel="noopener">Twitter</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <p class="text-sm text-gray-900 md:mb-6">
+      Copyright 1998-2024 <a href="https://www.nwoods.com">Northwoods Software</a>
+    </p>
+  </div>
+</footer>
+  </body>
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S5QK8VSK84"></script>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', 'G-S5QK8VSK84');
+  var getOutboundLink = function (url, label) {
+    gtag('event', 'click', {
+      'event_category': 'outbound',
+      'event_label': label,
+      'transport_type': 'beacon'
+    });
+  }
+</script>
+  <script src="./assets/js/prism.js"></script>
+  <script src="./release/go.js"></script>
+  <script src="./assets/js/goDoc.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.go) 
+        document
+          .getElementById('version')
+          .textContent = "GoJS version " + go.version;
+      if (window.goDoc) 
+        window.goDoc();
+      }
+    );
+  </script>
+</html>
