@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Network Management</title>
   <link rel="stylesheet" href="css/journey.css">
-  <script src="js/journey.js"></script>
   <style type="text/css">
     #mynetwork {
       width: 100%;
@@ -13,152 +12,11 @@
       margin-top: -125px;
       margin-left: -375px;
     }
-    
   </style>
-  <script
-    type="text/javascript"
-    src="../../../standalone/umd/vis-network.min.js"
-  ></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-  <script type="text/javascript">
-    var nodes = null;
-    var edges = null;
-    var network = null;
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
 
-    var DIR = "../img/refresh-cl/";
-    var EDGE_LENGTH_MAIN = 150;
-    var EDGE_LENGTH_SUB = 50;
-
-    function draw() {
-      nodes = [];
-
-      edges = [];
-
-      var DIR = "css/img/";
-
-      nodes.push({
-        id: 1,
-        label: "Router",
-        image: DIR + "router-inalambrico.png",
-        shape: "image",
-      });
-      nodes.push({
-        id: 2,
-        label: "Router",
-        image: DIR + "router-inalambrico.png",
-        shape: "image",
-      });
-      nodes.push({
-        id: 3,
-        label: "Router",
-        image: DIR + "router-inalambrico.png",
-        shape: "image",
-      });
-      edges.push({ from: 1, to: 2, length: EDGE_LENGTH_MAIN });
-      edges.push({ from: 1, to: 3, length: EDGE_LENGTH_MAIN });
-
-      for (var i = 4; i <= 7; i++) {
-        nodes.push({
-          id: i,
-          label: "Router",
-          image: DIR + "router-inalambrico.png",
-          shape: "image",
-        });
-        edges.push({ from: 2, to: i, length: EDGE_LENGTH_SUB });
-      }
-
-      nodes.push({
-        id: 101,
-        label: "Switch",
-        image: DIR + "cubo.png",
-        shape: "image",
-      });
-      edges.push({ from: 2, to: 101, length: EDGE_LENGTH_SUB });
-
-      nodes.push({
-        id: 102,
-        label: "Switch",
-        image: DIR + "cubo.png",
-        shape: "image",
-      });
-      edges.push({ from: 3, to: 102, length: EDGE_LENGTH_SUB });
-
-      nodes.push({
-        id: 103,
-        label: "Switch",
-        image: DIR + "cubo.png",
-        shape: "image",
-      });
-      edges.push({ from: 1, to: 103, length: EDGE_LENGTH_SUB });
-
-      nodes.push({
-        id: 104,
-        label: "Switch",
-        image: DIR + "cubo.png",
-        shape: "image",
-      });
-      edges.push({ from: 1, to: 104, length: EDGE_LENGTH_SUB });
-
-      for (var i = 200; i <= 201; i++) {
-        nodes.push({
-          id: i,
-          label: "Router",
-          image: DIR + "router-inalambrico.png",
-          shape: "image",
-        });
-        edges.push({ from: 3, to: i, length: EDGE_LENGTH_SUB });
-      }
-
-      var container = document.getElementById("mynetwork"); 
-      var data = {
-        nodes: nodes,
-        edges: edges,
-      };
-      var options = {
-        edges: {
-          color: {
-            color: '#9148ff', 
-            highlight: '#00FF0D' 
-          },
-          width: 2, 
-          selectionWidth: 2, 
-          smooth: {
-            type: 'dynamic', 
-            forceDirection: 'horizontal' 
-          },
-          dashes: true, 
-          chosen: true 
-        },
-        interaction: {
-          hover: true 
-        }
-      };
-
-      var routerEdgeOptions = {
-        dashes: true 
-      };
-
-      var switchEdgeOptions = {
-        dashes: false 
-      };
-
-      edges.forEach(function(edge) {
-        if (edge.to >= 1 && edge.to <= 3) {
-          Object.assign(edge, routerEdgeOptions);
-        }
-      });
-
-      edges.forEach(function(edge) {
-        if (edge.to >= 101 && edge.to <= 104) {
-          Object.assign(edge, switchEdgeOptions);
-        }
-      });
-
-      network = new vis.Network(container, data, options);
-    }
-  </script>
 </head>
-<body onload="draw()">
+<body>
   <header>
     <button class="luz"></button>
     <section>
@@ -188,13 +46,79 @@
     <div class="qr-container" id="qr-container">
       <img class="qr-image" src="css/img/VQ9-a2_qrcode.png" alt="Código QR">
     </div>
-
   </header>
+
   <main>
-    <h1>
-      Network <br>Active<br>Search
-    </h1>
-    <div id="mynetwork" ></div>
+    <h1>Network Active Search</h1>
+    <div id="mynetwork"></div>
   </main>
+
+  <script>
+    // Variable para almacenar la información de la red
+    var networkData = []; // Inicialmente vacío
+
+    // Obtener datos de la red desde el servidor
+    fetch('http://localhost:5000/api/python')
+      .then(response => response.json())
+      .then(data => {
+        networkData = data; // Actualizar datos de la red
+        createNetworkTopology(networkData); // Crear la topología de red
+      })
+      .catch(error => {
+        console.error('Hubo un error:', error);
+      });
+
+    // Función para crear la topología de red con Vis.js
+    function createNetworkTopology(data) {
+      var nodes = new vis.DataSet();
+      var edges = new vis.DataSet();
+
+      // Agregar nodos y conexiones al conjunto de datos
+      data.forEach(function(device) {
+        nodes.add({
+          id: device.ip,
+          label: device.deviceType + '\n' + device.ip // Agregar la IP al label del nodo
+        });
+
+        
+
+        device.connections.forEach(function(connection) {
+          // Agregar conexión entre dispositivos
+          edges.add({
+            from: connection.From_IP,
+            to: connection.To_IP,
+            label: connection.Connected_from_Interface + ' -> ' + connection.Connected_to_Interface + '\n' + connection.From_IP + ' -> ' + connection.To_IP // Mostrar información en la conexión
+          });
+        });
+      });
+
+      // Crear una nueva red Vis.js
+      var container = document.getElementById("mynetwork");
+      var data = {
+        nodes: nodes,
+        edges: edges
+      };
+      var options = {
+        edges: {
+          color: {
+            color: '#9148ff', 
+            highlight: '#00FF0D' 
+          },
+          width: 2, 
+          selectionWidth: 2, 
+          smooth: {
+            type: 'dynamic', 
+            forceDirection: 'horizontal' 
+          },
+          dashes: true, 
+          chosen: true 
+        },
+        interaction: {
+          hover: true 
+        }
+      };
+      var network = new vis.Network(container, data, options);
+    }
+  </script>
 </body>
 </html>
