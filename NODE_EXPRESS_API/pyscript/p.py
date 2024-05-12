@@ -3,7 +3,7 @@ import textfsm
 from functions import get_device_neighbor_details, get_device_info
 device = {
         'device_type': 'cisco_ios', 
-        'host': '192.168.0.18',
+        'host': '192.168.1.18',
         'username': 'gmedina',
         'password': 'cisco',
     }

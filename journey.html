@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Network Management</title>
   <link rel="stylesheet" href="css/journey.css">
-  <style type="text/css">
-    #mynetwork {
-      width: 100%;
-      height: 100vh;
-      margin-top: -125px;
-      margin-left: -375px;
+  <script src="js/journey.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/2.1.40/go.js"></script>
+  <style>
+    #myDiagram {
+      width: 1200px;
+      height: 700px;
+      border: 1px solid black;
+    }
+    #info{
+      width: 300px;
+      height: 700px;
+      border: 1px solid black;
     }
   </style>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-
 </head>
 <body>
   <header>
@@ -47,78 +51,150 @@
       <img class="qr-image" src="css/img/VQ9-a2_qrcode.png" alt="Código QR">
     </div>
   </header>
-
   <main>
-    <h1>Network Active Search</h1>
-    <div id="mynetwork"></div>
+    <h1>Network <br> Active <br>Search</h1>
+    <div id="myDiagram"></div>
+  <div id="connections"></div>
+  <div id="info"></div>
   </main>
-
   <script>
-    // Variable para almacenar la información de la red
-    var networkData = []; // Inicialmente vacío
-
-    // Obtener datos de la red desde el servidor
     fetch('http://localhost:5000/api/python')
-      .then(response => response.json())
-      .then(data => {
-        networkData = data; // Actualizar datos de la red
-        createNetworkTopology(networkData); // Crear la topología de red
-      })
-      .catch(error => {
-        console.error('Hubo un error:', error);
-      });
+  .then(response => response.json())
+  .then(data => {
+    // Crear un nuevo diagrama
+    var $ = go.GraphObject.make;
+    var myDiagram = $(go.Diagram, "myDiagram", {
+      initialContentAlignment: go.Spot.Center,
+      "undoManager.isEnabled": true,
+      layout: $(go.LayeredDigraphLayout, { columnSpacing: 50, layerSpacing: 50 }) // Establecer el espaciado entre nodos
+    });
 
-    // Función para crear la topología de red con Vis.js
-    function createNetworkTopology(data) {
-      var nodes = new vis.DataSet();
-      var edges = new vis.DataSet();
+   // Definir la plantilla para los nodos
+   myDiagram.nodeTemplate =
+      $(go.Node, "Auto",
+        // Si el deviceType es "Router", mostrar una imagen de router, de lo contrario, mostrar una imagen de switch
+        $(go.Picture,
+          { width: 75, height: 75 },
+          new go.Binding("source", "deviceType", function(deviceType) {
+            if (deviceType === "Router") {
+              return "css/img/router-inalambrico.png"; // Ruta de la imagen del router
+            } else if (deviceType === "Switch") {
+              return "css/img/cubo.png"; // Ruta de la imagen del switch
+            }
+          })
+        )
+      );
 
-      // Agregar nodos y conexiones al conjunto de datos
-      data.forEach(function(device) {
-        nodes.add({
-          id: device.ip,
-          label: device.deviceType + '\n' + device.ip // Agregar la IP al label del nodo
+ // Define la plantilla para los enlaces
+function defineLinkTemplate() {
+  myDiagram.linkTemplate =
+    $(go.Link,
+      $(go.Shape, { strokeWidth: 3, stroke: "#9148ff" }), // Cambiar el color a morado
+      $(go.TextBlock, { name: "fromLabel", segmentIndex: 0, segmentOffset: new go.Point(0, -10), stroke: "white", visible: false }, // Cambiar el color del texto a blanco
+        new go.Binding("text", "Connected_from_Interface")),
+      $(go.TextBlock, { name: "toLabel", segmentIndex: -1, segmentOffset: new go.Point(0, -10), textAlign: "end", stroke: "white", visible: false }, // Cambiar el color del texto a blanco
+        new go.Binding("text", "Connected_to_Interface"))
+    );
+}
+
+  // Define la plantilla inicialmente
+  defineLinkTemplate();
+
+  // Crear un conjunto para mantener un registro de las conexiones agregadas
+  let createdConnections = new Set();
+
+  // Iterar sobre los datos JSON y agregar nodos y conexiones al diagrama
+  data.forEach(device => {
+    // Agregar un nodo para cada dispositivo
+    myDiagram.model.addNodeData({
+      key: device.MyHost,
+      deviceType: device.deviceType,
+      ip : device.ip,
+      SystemVersion : device.SysVersion,
+      Model : device.modelo,
+      Serie : device.numeroSerie
+    });
+
+    // Agregar enlaces para cada conexión del dispositivo
+    device.connections.forEach(connection => {
+      // Crear una cadena de conexión que represente la conexión actual
+      const currentConnection = `${connection.MyHost}-${connection.HostNei}-${connection.Connected_from_Interface}-${connection.Connected_to_Interface}`;
+
+      // Verificar si la conexión opuesta ya existe en el conjunto
+      const reverseConnection = `${connection.HostNei}-${connection.MyHost}-${connection.Connected_to_Interface}-${connection.Connected_from_Interface}`;
+      if (!createdConnections.has(reverseConnection)) {
+        // Si la conexión opuesta no existe, agrégala al conjunto
+        createdConnections.add(currentConnection);
+
+        // Agregar el enlace al diagrama
+        myDiagram.model.addLinkData({
+          from: connection.MyHost,
+          to: connection.HostNei,
+          Connected_from_Interface: connection.Connected_from_Interface,
+          Connected_to_Interface: connection.Connected_to_Interface
         });
+      }
+    });
+  });
+// Agregar un evento de clic a los nodos
+myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
+    var part = e.subject.part;
+    // Verificar si el clic se hizo en un nodo
+    if (part instanceof go.Node) {
+        // Obtener los datos del nodo
+        var nodeData = part.data;
+        // Mostrar la información del nodo en el div "info"
+        document.getElementById("info").innerHTML = `
+            <p style="color: #9148ff;">Nombre: ${nodeData.key}</p>
+            <p style="color: #9148ff;">Tipo de dispositivo: ${nodeData.deviceType}</p>
+            <p style="color: #9148ff;">Ip: ${nodeData.ip}</p>
+            <p style="color: #9148ff;">Versión del sistema: ${nodeData.SysVersion}</p>
+            <p style="color: #9148ff;">Modelo: ${nodeData.modelo}</p>
+            <button>Datos de rendimiento</button>
+            <style> 
+              button {
+              border: 1px solid black;
+              padding: 12px 30px 12px 30px;
+              border-radius: 30px;
+              background-color: #9148ff;
+              font-weight: bolder;
+              font-size: 15px;
+              box-shadow: 0px 0px 1px;
+              transform: all 2s esase;
+              transition-duration: .3s;
+            }
 
-        
+            button:hover {
+              transform: translateY(-10px);
+              box-shadow: 0px 7px 1px rgb(0, 0, 0);
+              border: 1px solid black;
+            }
 
-        device.connections.forEach(function(connection) {
-          // Agregar conexión entre dispositivos
-          edges.add({
-            from: connection.From_IP,
-            to: connection.To_IP,
-            label: connection.Connected_from_Interface + ' -> ' + connection.Connected_to_Interface + '\n' + connection.From_IP + ' -> ' + connection.To_IP // Mostrar información en la conexión
+            button:active {
+              transform: translateY(10px);
+              box-shadow: 0px 0px 1px;
+            }
+            </style>
+                  `;
+              }
           });
-        });
-      });
 
-      // Crear una nueva red Vis.js
-      var container = document.getElementById("mynetwork");
-      var data = {
-        nodes: nodes,
-        edges: edges
-      };
-      var options = {
-        edges: {
-          color: {
-            color: '#9148ff', 
-            highlight: '#00FF0D' 
-          },
-          width: 2, 
-          selectionWidth: 2, 
-          smooth: {
-            type: 'dynamic', 
-            forceDirection: 'horizontal' 
-          },
-          dashes: true, 
-          chosen: true 
-        },
-        interaction: {
-          hover: true 
-        }
-      };
-      var network = new vis.Network(container, data, options);
+
+  // Manejar clics en los enlaces para cambiar la visibilidad del texto
+  myDiagram.addDiagramListener("ObjectSingleClicked", function(e) {
+    var part = e.subject.part;
+    if (part instanceof go.Link) {
+      var fromLabel = part.findObject("fromLabel");
+      var toLabel = part.findObject("toLabel");
+      if (fromLabel !== null) fromLabel.visible = !fromLabel.visible;
+      if (toLabel !== null) toLabel.visible = !toLabel.visible;
     }
+  });
+
+})
+.catch(error => {
+  console.error('Hubo un error:', error);
+});
   </script>
 </body>
 </html>

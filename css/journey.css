@@ -109,6 +109,14 @@ h1 {
   font-weight: bold;
   color: white;
   padding: 20px;  
+  
+}
+
+th{
+  color: red;
+}
+td{
+  color: red;
 }
 
 article{

@@ -1,11 +1,20 @@
 class Device:
     def __init__(self,ip):
         self.deviceType = ""
+        self.hostname = ""
         self.ip = ip
         self.interfaces = []
         self.connections = []
+        self.SysVersion = None
+        self.modelo = None
+        self.numeroSerie = None
+        self.internet = False
 
-    def set_interfaces(self,intv4,intv6):
+    def set_internet(self):
+        self.internet = True
+
+    def set_interfaces(self,intv4,intv6,hostname):
+        self.hostname = hostname
         index = 3
         counter = 0
         for x,y in zip(intv4,intv6):
@@ -19,7 +28,7 @@ class Device:
         else:
             self.deviceType = "Router"
 
-    def set_connections(self,To_interface,From_IP,typeD,From_interface,IP_Connected):
+    def set_connections(self,MyHost,To_interface,From_IP,HostNei,typeD,From_interface,IP_Connected):
         for x in self.connections:
             if x["To_IP"] == IP_Connected:
                 return False
@@ -28,7 +37,7 @@ class Device:
         else:
             typeD = "Router"
         self.connections += [
-            {"Connected_from_Interface":From_interface,"From_IP":From_IP,"Device": typeD,"Connected_to_Interface":To_interface,"To_IP":IP_Connected}
+            {"MyHost":MyHost,"Connected_from_Interface":From_interface,"From_IP":From_IP,"HostNei": HostNei,"Device": typeD,"Connected_to_Interface":To_interface,"To_IP":IP_Connected}
             ]
         
     def to_dict(self):
@@ -46,9 +55,18 @@ class Device:
 
         return device_dict
         
+    def setInfo(self,version,model,serial):
+        self.SysVersion = version
+        self.modelo = model
+        self.numeroSerie = serial
+
     def __str__(self):
         device_str = f"Device Type: {self.deviceType}\n"
+        device_str += f"Hostname: {self.hostname}\n"
         device_str += f"IP Address: {self.ip}\n"
+        device_str += f"System version: {self.SysVersion}\n"
+        device_str += f"Model: {self.modelo}\n"
+        device_str += f"Serial: {self.numeroSerie}\n"
 
         if self.interfaces:
             device_str += "Interfaces:\n"
@@ -63,7 +81,7 @@ class Device:
         if self.connections:
             device_str += "Connections:\n"
             for conn in self.connections:
-                device_str += f"- From Interface: {conn['Connected_from_Interface']}, From IP: {conn['From_IP']}, Device: {conn['Device']} , To Interface: {conn['Connected_to_Interface']}, To IP: {conn['To_IP']}\n"
+                device_str += f"-From host: {conn['MyHost']} From Interface: {conn['Connected_from_Interface']}, From IP: {conn['From_IP']},To host: {conn['HostNei']} ,Device: {conn['Device']} , To Interface: {conn['Connected_to_Interface']}, To IP: {conn['To_IP']}\n"
         else:
             device_str += "No connections."
 
